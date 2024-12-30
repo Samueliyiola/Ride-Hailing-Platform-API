@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () =>{
     try{
-        sequelize.authenticate();
+        sequelize.sync();
         console.log("Connection has been established successfully.");	
     }
     catch(error){
