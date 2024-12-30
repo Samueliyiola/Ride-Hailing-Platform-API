@@ -1,7 +1,7 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
-const express = require("express");
-const sequelize = require("./config/sequelize");
+import express from "express";
+import {sequelize} from "./config/sequelize.js";
 const app = express();
 
 
@@ -10,9 +10,9 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, async () =>{
+app.listen(PORT, () =>{
     try{
-        await sequelize.sync();
+        sequelize.authenticate();
         console.log("Connection has been established successfully.");	
     }
     catch(error){

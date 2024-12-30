@@ -1,37 +1,30 @@
-import sequelize from "../config/sequelize";
+import sequelize  from "../config/sequelize";   
 import { Sequelize, DataTypes } from "sequelize";
 
-export const Driver = sequelize.define("Driver", {
+
+export const Vehicle = sequelize.define("Vehicle", {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    firstName: {
+    manufacturer: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lastName: {
+    model: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    dateOfBirth: {
+    year: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    email: {
+    color: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    phone: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    stateOfOrigin: {
+    plateNumber: {
         type: DataTypes.STRING,
         allowNull: false
     }

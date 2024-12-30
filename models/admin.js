@@ -1,7 +1,8 @@
-import sequelize from "../config/sequelize";
+import sequelize  from "../config/sequelize";   
 import { Sequelize, DataTypes } from "sequelize";
 
-export const Driver = sequelize.define("Driver", {
+
+export const admin = sequelize.define("Admin", {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
