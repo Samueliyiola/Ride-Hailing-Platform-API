@@ -1,7 +1,8 @@
-import sequelize from "../config/sequelize.js";
+import sequelize  from "../config/sequelize.js";   
 import { Sequelize, DataTypes } from "sequelize";
 
-const Driver = sequelize.define("Driver", {
+
+const User = sequelize.define("User", {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -16,12 +17,17 @@ const Driver = sequelize.define("Driver", {
         allowNull: false
     },
     dateOfBirth: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATEONLY,
         allowNull: false
+    },
+    gender : {
+        type : DataTypes.ENUM("male", "female"),
+        allowNull : false
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique : true
     },
     password: {
         type: DataTypes.STRING,
@@ -34,11 +40,7 @@ const Driver = sequelize.define("Driver", {
     address : {
         type : DataTypes.STRING,
         allowNull : false
-    },
-    stateOfOrigin: {
-        type: DataTypes.STRING,
-        allowNull: false
     }
 });
 
-export default Driver;
+export default User;

@@ -17,7 +17,7 @@ const Admin = sequelize.define("Admin", {
         allowNull: false
     },
     dateOfBirth: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     email: {
@@ -33,9 +33,9 @@ const Admin = sequelize.define("Admin", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    stateOfOrigin: {
-        type: DataTypes.STRING,
-        allowNull: false
+    address : {
+        type : DataTypes.STRING,
+        allowNull : false
     }
 });
 
