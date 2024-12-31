@@ -1,7 +1,7 @@
 # Ride-Hailing API
 
 ## Overview
-This API is designed to support a ride-hailing platform, enabling features like user authentication, vehicle management, ride booking, and fare calculation. Built with **Node.js**, **Express.js**, and **Sequelize ORM**, it ensures scalability and efficiency.
+This API is designed to support a ride-hailing platform, enabling features like user authentication, drivers management, vehicle management, ride booking, and fare calculation. Built with **Node.js**, **Express.js**, and **Sequelize ORM**, it ensures scalability and efficiency.
 
 ---
 
@@ -18,8 +18,7 @@ This API is designed to support a ride-hailing platform, enabling features like 
 - **Backend**: Node.js with Express.js
 - **Database**: MySQL (via Sequelize ORM)
 - **Authentication**: JSON Web Tokens (JWT)
-- **Containerization**: Docker
-- **Documentation**: Swagger (OpenAPI 3.0)
+- **Documentation**: Postman
 
 ---
 
@@ -42,13 +41,13 @@ This API is designed to support a ride-hailing platform, enabling features like 
 ### Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/ride-hailing-api.git
+    git clone https://github.com/Samueliyiola/ride-hailing-api.git
     cd ride-hailing-api
     ```
 
 2. Install dependencies:
     ```bash
-    npm install
+    npm install express sequelize sql2 dotenv jsonwebtoken bcrypt 
     ```
 
 3. Setup the database:
@@ -73,10 +72,6 @@ This API is designed to support a ride-hailing platform, enabling features like 
 - **POST /api/auth/register**: Register a new user.
 - **POST /api/auth/login**: Log in and receive a JWT token.
 
-### Users
-- **GET /api/users/profile**: Get the authenticated user's profile.
-- **PUT /api/users/profile**: Update user profile information.
-
 ### Drivers and Vehicles
 - **POST /api/drivers**: Register a new driver.
 - **GET /api/drivers/:id**: Get details of a specific driver.
@@ -99,15 +94,6 @@ This API is designed to support a ride-hailing platform, enabling features like 
 
 ---
 
-## Docker Support
-1. Build the Docker image:
-    ```bash
-    docker build -t ride-hailing-api .
-    ```
-2. Run the Docker container:
-    ```bash
-    docker run -p 3000:3000 --env-file .env ride-hailing-api
-    ```
 
 ---
 
@@ -135,5 +121,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 ## Contact
-For inquiries or support, please contact [your-email@example.com].
+For inquiries or support, please contact [samueliyiola13@gmail.com].
 
