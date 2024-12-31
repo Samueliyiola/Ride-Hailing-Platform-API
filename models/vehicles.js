@@ -1,8 +1,8 @@
-import sequelize  from "../config/sequelize";   
+import sequelize  from "../config/sequelize.js";   
 import { Sequelize, DataTypes } from "sequelize";
 
 
-export const Vehicle = sequelize.define("Vehicle", {
+const Vehicle = sequelize.define("Vehicle", {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -26,6 +26,10 @@ export const Vehicle = sequelize.define("Vehicle", {
     },
     plateNumber: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     }
 });
+
+
+export default Vehicle;

@@ -1,7 +1,7 @@
-import sequelize from "../config/sequelize";
+import sequelize from "../config/sequelize.js";
 import { Sequelize, DataTypes } from "sequelize";
 
-export const Driver = sequelize.define("Driver", {
+const Driver = sequelize.define("Driver", {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -36,3 +36,5 @@ export const Driver = sequelize.define("Driver", {
         allowNull: false
     }
 });
+
+export default Driver;

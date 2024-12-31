@@ -1,8 +1,8 @@
-import sequelize  from "../config/sequelize";   
+import sequelize  from "../config/sequelize.js";   
 import { Sequelize, DataTypes } from "sequelize";
 
 
-export const admin = sequelize.define("Admin", {
+const Admin = sequelize.define("Admin", {
     id : {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,7 +22,8 @@ export const admin = sequelize.define("Admin", {
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique : true
     },
     password: {
         type: DataTypes.STRING,
@@ -37,3 +38,5 @@ export const admin = sequelize.define("Admin", {
         allowNull: false
     }
 });
+
+export default Admin;
