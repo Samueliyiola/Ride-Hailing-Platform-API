@@ -20,6 +20,10 @@ const Admin = sequelize.define("Admin", {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
+    gender : {
+        type : DataTypes.ENUM("male", "female"),
+        allowNull : false
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -35,6 +39,11 @@ const Admin = sequelize.define("Admin", {
     },
     address : {
         type : DataTypes.STRING,
+        allowNull : false
+    },
+    isSuperAdmin : {
+        type : DataTypes.BOOLEAN,
+        defaultValue : false,
         allowNull : false
     }
 });

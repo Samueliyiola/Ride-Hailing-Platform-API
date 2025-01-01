@@ -8,10 +8,13 @@ import Admin from "./models/admins.js";
 import {Driver, Vehicle} from "./models/associations.js";
 import User from "./models/users.js";
 
+// Importing inbuilt middlewares
+app.use(express.json());
+
+
+
 
 const PORT = process.env.PORT || 3000;
-
-
 
 
 app.listen(PORT, async () =>{
