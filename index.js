@@ -11,8 +11,11 @@ import User from "./models/users.js";
 // Importing inbuilt middlewares
 app.use(express.json());
 
+// Import custom middlewares
+import userRouter from "./routes/userRoutes.js";
 
-
+// Endpoints
+app.use("/users", userRouter);
 
 const PORT = process.env.PORT || 3000;
 
