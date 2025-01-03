@@ -1,11 +1,12 @@
-import {Joi} from "joi";
+import pkg from "joi";
+const Joi = pkg;
 
 export const validateUser = Joi.object({
     firstName : Joi.string().required(),
     lastName : Joi.string().required(),
     dateOfBirth : Joi.date().required(),
     gender : Joi.string().valid("male", "female").required(),
-    email : Joi.email().required(),
+    email : Joi.string().required(),
     password: Joi.string()
         .min(8)  // Minimum 8 characters
         .max(20)  // Maximum 20 characters
@@ -25,7 +26,7 @@ export const validateAdmin = Joi.object({
     lastName : Joi.string().required(),
     dateOfBirth : Joi.date().required(),
     gender : Joi.string().valid("male", "female").required(),
-    email : Joi.email().required(),
+    email : Joi.string().required(),
     password: Joi.string()
         .min(8)  // Minimum 8 characters
         .max(20)  // Maximum 20 characters
@@ -46,7 +47,7 @@ export const validateDriver = Joi.object({
     lastName : Joi.string().required(),
     dateOfBirth : Joi.date().required(),
     gender : Joi.string().valid("male", "female").required(),
-    email : Joi.email().required(),
+    email : Joi.string().required(),
     password: Joi.string()
         .min(8)  // Minimum 8 characters
         .max(20)  // Maximum 20 characters

@@ -1,5 +1,5 @@
 import User from "../models/users.js";
-import validateUser from "../utils/validation";
+import {validateUser} from "../utils/validation.js";
 import bcrypt from "bcrypt";
 import sendEmail from "../utils/email.js"
 

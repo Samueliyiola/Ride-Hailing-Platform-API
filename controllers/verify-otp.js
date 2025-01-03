@@ -1,4 +1,4 @@
-import VerificationCode from "../models/VerificationCode.js";
+import VerificationCode from "../models/verificationCode.js";
 import User from "../models/users.js";
 import bcrypt from "bcrypt";
 
