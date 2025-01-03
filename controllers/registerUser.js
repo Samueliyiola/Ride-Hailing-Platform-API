@@ -1,7 +1,8 @@
 import User from "../models/users.js";
 import {validateUser} from "../utils/validation.js";
 import bcrypt from "bcrypt";
-import sendEmail from "../utils/email.js"
+import sendEmail from "../utils/email.js";
+import VerificationCode from "../models/verificationCode.js";
 
 const registerUser = async(req, res) =>{
    try{
@@ -14,8 +15,9 @@ const registerUser = async(req, res) =>{
             return res.status(400).json({Message : "Please input all fields correctly!"});
         }
         // Check if user already exists
-        const existingUser = User.findOne({where : {email}});
+        const existingUser = await User.findOne({where : {email}});
         if(existingUser){
+            console.log(existingUser);
             return res.status(403).json("User already exists!");
         }
         // hash the password
@@ -31,8 +33,8 @@ const registerUser = async(req, res) =>{
         return res.status(200).json({Message : "OTP Sent Successfully"});
    }
    catch(error){
-        console.log(error.details[0].message);
-        return res.status(505).json({Message : "An error has occured!"})
+        console.log(error);
+        return res.status(500).json({Message : "An error has occured!"})
    }
     
 }
