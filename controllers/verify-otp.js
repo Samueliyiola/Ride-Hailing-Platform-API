@@ -1,6 +1,7 @@
 import VerificationCode from "../models/verificationCode.js";
 import User from "../models/users.js";
 import bcrypt from "bcrypt";
+import {Op} from "sequelize";
 
 
 const verifyOtp = async(req, res) =>{
@@ -21,7 +22,7 @@ const verifyOtp = async(req, res) =>{
         return res.status(201).json({Message : "User registered successfully!"});
         
    } catch (error) {
-        console.log(error.detals[0].message);
+        console.log(error);
         return res.status(500).json({Message : "An error has occured"});
    }
 

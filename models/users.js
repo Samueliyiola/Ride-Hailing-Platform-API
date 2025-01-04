@@ -40,6 +40,11 @@ const User = sequelize.define("User", {
     address : {
         type : DataTypes.STRING,
         allowNull : false
+    },
+    role : {
+        type : DataTypes.ENUM("user", "driver", "admin"),
+        defaultValue: "user",
+        allowNull : false
     }
 });
 

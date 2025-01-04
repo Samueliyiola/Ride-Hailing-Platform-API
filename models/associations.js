@@ -1,9 +1,10 @@
-import Driver from "./drivers.js";
+import User from "./users.js";
 import Vehicle from "./vehicles.js"; 
 
-Driver.hasOne(Vehicle, {
-    onDelete : "CASCADE"
+User.hasOne(Vehicle, {
+    onDelete : "CASCADE",
+    onUpdate : "CASCADE"
 });
-Vehicle.belongsTo(Driver);
+Vehicle.belongsTo(User);
 
-export{Driver, Vehicle};
+export{User, Vehicle};

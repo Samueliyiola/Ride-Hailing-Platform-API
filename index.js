@@ -5,9 +5,9 @@ import sequelize from "./config/sequelize.js";
 import bodyParser from "body-parser";
 const app = express();
 
-import Admin from "./models/admins.js";
-import {Driver, Vehicle} from "./models/associations.js";
-import User from "./models/users.js";
+// import Admin from "./models/admins.js";
+import {User, Vehicle} from "./models/associations.js";
+// import User from "./models/users.js";
 import VerificationCode from "./models/verificationCode.js"
 
 // Importing inbuilt middlewares
@@ -17,7 +17,8 @@ app.use(bodyParser.json());
 import userRoutes from "./routes/userRoutes.js";
 
 // Endpoints
-app.use("/api", userRoutes);
+app.use("/api/users", userRoutes);
+// app.use("/")
 
 
 
