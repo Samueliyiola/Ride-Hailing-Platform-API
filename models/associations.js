@@ -8,3 +8,4 @@ User.hasOne(Vehicle, {
 Vehicle.belongsTo(User);
 
 export{User, Vehicle};
+export default User;

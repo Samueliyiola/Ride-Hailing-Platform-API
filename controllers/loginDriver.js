@@ -2,7 +2,7 @@ import User from "../models/associations.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const loginUser = async(req, res) =>{
+const loginDriver = async(req, res) =>{
     try {
         const {email, password} = req.body;
         // Confirm all fields are filled 
@@ -12,7 +12,7 @@ const loginUser = async(req, res) =>{
         // check if user exists
         const user = await User.findOne({where : {email}});
         // verify user
-        if(!user){
+        if(!user || user.role !== "driver"){
             return res.status(404).json({Message : "User does not exist"});
         }
         const comparePassword = await bcrypt.compare(password, user.password);
@@ -28,4 +28,4 @@ const loginUser = async(req, res) =>{
     }
 }
 
-export default loginUser;
+export default loginDriver;

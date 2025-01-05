@@ -18,7 +18,7 @@ const verifyOtp = async(req, res) =>{
         // Create a new user
         await User.create({firstName, lastName, dateOfBirth, gender, email, password : hashedPassword, phone, address});
         // delete the verification code from the database
-        await VerificationCode.destroy({where : {email, code : otp, expiresAt: { [Op.gt]: new Date()}}});
+        await VerificationCode.destroy({where : {email, code : otp}});
         return res.status(201).json({Message : "User registered successfully!"});
         
    } catch (error) {

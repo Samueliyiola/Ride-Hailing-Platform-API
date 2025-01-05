@@ -1,4 +1,4 @@
-import User from "../models/users.js";
+import User from "../models/associations.js";
 import {validateUser} from "../utils/validation.js";
 import bcrypt from "bcrypt";
 import sendEmail from "../utils/email.js";
@@ -21,7 +21,7 @@ const registerUser = async(req, res) =>{
             return res.status(403).json("User already exists!");
         }
         // hash the password
-        const newPassword = bcrypt.hash(password, 10);
+        const newPassword = await  bcrypt.hash(password, 10);
         // Generate the OTP and the deadline.
         const otp = Math.ceil(100000 + Math.random() * 900000).toString();
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000);

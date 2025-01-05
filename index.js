@@ -15,10 +15,13 @@ app.use(express.json());
 app.use(bodyParser.json());
 // Import custom middlewares
 import userRoutes from "./routes/userRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import driverRoutes from "./routes/driverRoutes.js";
 
 // Endpoints
 app.use("/api/users", userRoutes);
-// app.use("/")
+app.use("/api/admin", adminRoutes);
+app.use("/api/driver", driverRoutes);
 
 
 

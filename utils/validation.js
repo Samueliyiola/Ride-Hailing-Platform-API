@@ -19,7 +19,7 @@ export const validateUser = Joi.object({
         .pattern(/[!@#$%^&*(),.?":{}|<>]/, 'special'),  // Requires special characters
     phone : Joi.number().required(),
     address : Joi.string().required(),
-    role : Joi.string().valid("user", "admin", "driver").required()
+    role : Joi.string().valid("user", "admin", "driver")
 });
 
 // export const validateAdmin = Joi.object({

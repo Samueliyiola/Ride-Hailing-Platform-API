@@ -1,5 +1,5 @@
-import User from "../models/associations.js";
-import Vehicle from "../models/asociations.js";
+// import User from "../models/associations.js";
+import {User, Vehicle} from "../models/associations.js";
 import {validateUser, validateVehicle} from "../utils/validation.js";
 import bcrypt from "bcrypt";
 
@@ -21,7 +21,7 @@ const registerDriver = async(req, res) => {
         if(existingUser){
             return res.status(403).json({Message : "User already exists!"});
         }
-        const hashedPassword = bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         // Use transactions to make sure the driver and vehicle are added together.
         const transaction = await sequelize.transaction();
         try{
