@@ -1,4 +1,4 @@
-import User from "../models/associations.js";
+import {User, Vehicle} from "../models/associations.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -12,16 +12,16 @@ const loginDriver = async(req, res) =>{
         // check if user exists
         const user = await User.findOne({where : {email}});
         // verify user is a driver
-        if(!user || user.role !== "driver"){
-            console.log(user);
-            return res.status(404).json({Message : "User does not exist"});
+        if(user.role == "driver"){
+            const comparePassword = await bcrypt.compare(password, user.password);
+            if(!comparePassword){
+                return res.status(401).json({Message : "Invalid username or password!"});
+            }
+            const accessToken = jwt.sign({id: user.id, email : user.email, role : user.role}, process.env.JWT_SECRET);
+            return res.status(200).json({Message : `Welcome ${user.firstName}, Login successful`, accessToken});
         }
-        const comparePassword = await bcrypt.compare(password, user.password);
-        if(!comparePassword){
-            return res.status(401).json({Message : "Invalid username or password!"});
-        }
-        const accessToken = jwt.sign({id: user.id, email : user.email, role : user.role}, process.env.JWT_SECRET);
-        return res.status(200).json({Message : `Welcome ${user.firstName}, Login successful`, accessToken});
+        console.log(user);
+        return res.status(404).json({Message : "User doesn't  exist"});
     } catch (error) {
         console.log(error);
         return res.status(500).json({Message : "An error has occured!"})
