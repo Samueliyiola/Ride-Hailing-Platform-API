@@ -11,8 +11,9 @@ const loginDriver = async(req, res) =>{
         }
         // check if user exists
         const user = await User.findOne({where : {email}});
-        // verify user
+        // verify user is a driver
         if(!user || user.role !== "driver"){
+            console.log(user);
             return res.status(404).json({Message : "User does not exist"});
         }
         const comparePassword = await bcrypt.compare(password, user.password);

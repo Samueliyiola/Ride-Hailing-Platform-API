@@ -2,17 +2,19 @@
 import {User, Vehicle} from "../models/associations.js";
 import {validateUser, validateVehicle} from "../utils/validation.js";
 import bcrypt from "bcrypt";
+import sequelize from "../config/sequelize.js";
 
 
 const registerDriver = async(req, res) => {
     try{
         const {firstName, lastName, dateOfBirth, gender, email, password, phone, address, manufacturer, model, year, color, plateNumber} = req.body;
         // validate inputs
-        const {error, value} = await validateUser.validateAsync(req.body);
+        const {error, value} = validateUser.validate({firstName, lastName, dateOfBirth, gender, email, password, phone, address});
         if(error){
+            console.log(error);
             return res.status(400).json({Message : "Please input driver's details correctly!"});
         }
-        const{error1, value1} = await validateVehicle.validateAsync(req.body);
+        const{error1, value1} = validateVehicle.validate({manufacturer, model, year, color, plateNumber});
         if(error1){
             return res.status(400).json({Message : "Please input vehicle's details correctly!"})
         }
