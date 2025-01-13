@@ -12,7 +12,8 @@ import VerificationCode from "./models/verificationCode.js"
 
 // Importing inbuilt middlewares to be used globally.
 app.use(express.json());
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
+
 // Import custom middlewares
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -30,19 +31,4 @@ app.use("/api/driver", driverRoutes);
 
 
 
-
-
-
-const PORT = process.env.PORT || 3000;
-
-
-app.listen(PORT, async () =>{
-    try{
-        // Sync database
-        await sequelize.sync();
-        console.log(`The server is running on port:${PORT}`);	
-    }
-    catch(error){
-        console.log(error);
-    }
-})
+export default app;
