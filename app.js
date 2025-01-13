@@ -18,11 +18,13 @@ app.use(bodyParser.urlencoded({extended : true}));
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import driverRoutes from "./routes/driverRoutes.js";
+import limiter from "./middlewares/rateLimiter.js";
 
 // Endpoints
-app.use("/api/users", userRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/driver", driverRoutes);
+app.use(limiter);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/driver", driverRoutes);
 
 
 
