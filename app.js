@@ -10,15 +10,18 @@ import {User, Vehicle} from "./models/associations.js";
 // import User from "./models/users.js";
 import VerificationCode from "./models/verificationCode.js"
 
-// Importing inbuilt middlewares to be used globally.
+// Import inbuilt middlewares to be used globally.
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
 // Import custom middlewares
+import limiter from "./middlewares/rateLimiter.js";
+
+// Import routes
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import driverRoutes from "./routes/driverRoutes.js";
-import limiter from "./middlewares/rateLimiter.js";
+
 
 // Endpoints
 app.use(limiter);
