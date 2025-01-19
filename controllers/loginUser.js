@@ -26,6 +26,6 @@ const loginUser = async(req, res) =>{
         return res.status(500).json({Message : "An error has occured!"})
         
     }
-}
+} 
 
 export default loginUser;
