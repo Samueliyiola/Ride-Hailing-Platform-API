@@ -8,7 +8,7 @@ import VerificationCode from "../models/verificationCode.js";
 
 
 
-exports.loginUser = async(req, res) =>{
+export const loginUser = async(req, res) =>{
     try {
         const {email, password} = req.body;
         // Confirm all fields are filled 
@@ -36,7 +36,7 @@ exports.loginUser = async(req, res) =>{
 
 
 
-exports.getAllUsers = async (req, res) =>{
+export const getAllUsers = async (req, res) =>{
     try{
         const Users = await User.findAll();
         res.status(200).json({Message : "Users retrieved successfully!", Users});
@@ -48,13 +48,13 @@ exports.getAllUsers = async (req, res) =>{
 
 
 
-exports.registerUser = async(req, res) =>{
+export const registerUser = async(req, res) =>{
    try{
         // Accept input from the user
         const {firstName, lastName, dateOfBirth, gender, email, password, phone, address} = req.body;
         // Validate user inputs
         const newUser = {firstName, lastName, dateOfBirth, gender, email, password, phone, address};
-        const {error, value} = await validateUser.validateAsync(req.body);
+        const {error, value} = validateUser.validate(req.body);
         if(error){
             return res.status(400).json({Message : "Please input all fields correctly!"});
         }

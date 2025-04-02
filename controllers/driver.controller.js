@@ -1,4 +1,3 @@
-import {User, Vehicle} from "../models/associations.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 // import User from "../models/associations.js";

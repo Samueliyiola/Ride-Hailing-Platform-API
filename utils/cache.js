@@ -1,4 +1,4 @@
-import redis from "./redisConfig.js";
+import redis from "../config/redisConfig.js";
 
 // Set a value in Redis
 const setCache = async (key, value, ttl) => {

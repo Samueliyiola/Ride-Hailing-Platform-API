@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import {validateUser} from "../utils/validation.js";
 
 
-exports.loginAdmin = async(req, res) =>{
+export const loginAdmin = async(req, res) =>{
     try {
         const {email, password} = req.body;
         // Confirm all fields are filled 
@@ -32,7 +32,7 @@ exports.loginAdmin = async(req, res) =>{
 
 
 
-exports.registerAdmin = async(req, res) =>{
+export const registerAdmin = async(req, res) =>{
    try{
         // Accept input from the user
         const {firstName, lastName, dateOfBirth, gender, email, password, phone, address} = req.body;
