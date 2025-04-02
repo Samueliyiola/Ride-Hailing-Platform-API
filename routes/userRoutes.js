@@ -1,10 +1,11 @@
-import getAllUsers from "../controllers/getAllUsers.js";
-import registerUser from "../controllers/registerUser.js";
+// import getAllUsers from "../controllers/getAllUsers.js";
+// import registerUser from "../controllers/registerUser.js";
+// import loginUser from "../controllers/loginUser.js";
+
 import verifyOtp from "../controllers/verify-otp.js";
-import loginUser from "../controllers/loginUser.js";
-
-
+import {getAllUsers, registerUser, loginUser} from "../controllers/user.controller.js";
 import express from "express";
+
 const router = express.Router();
 
 router.get("/", getAllUsers);

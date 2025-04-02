@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import sequelize from "./config/sequelize.js";
+import {setCache, getCache} from "./utils/cache.js";
 import bodyParser from "body-parser";
 const app = express();
 
