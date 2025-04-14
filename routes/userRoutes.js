@@ -2,7 +2,7 @@
 // import registerUser from "../controllers/registerUser.js";
 // import loginUser from "../controllers/loginUser.js";
 
-import verifyOtp from "../controllers/verify-otp.js";
+import verifyOtp from "../services/verify-otp.js";
 import {getAllUsers, registerUser, loginUser} from "../controllers/user.controller.js";
 import express from "express";
 
