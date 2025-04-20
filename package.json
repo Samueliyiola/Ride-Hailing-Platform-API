@@ -20,6 +20,7 @@
     "ioredis": "^5.4.2",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "mysql2": "^3.12.0",
     "nodemailer": "^6.9.16",
     "sequelize": "^6.37.5"

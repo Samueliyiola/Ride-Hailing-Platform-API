@@ -4,6 +4,7 @@ import express from "express";
 import sequelize from "./config/sequelize.js";
 import {setCache, getCache} from "./utils/cache.js";
 import bodyParser from "body-parser";
+import morgan from "morgan";
 const app = express();
 
 // import Admin from "./models/admins.js";
@@ -12,6 +13,7 @@ import {User, Vehicle} from "./models/associations.js";
 import VerificationCode from "./models/verificationCode.js"
 
 // Import inbuilt middlewares to be used globally.
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
