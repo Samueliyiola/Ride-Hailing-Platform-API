@@ -11,24 +11,26 @@ const Ride = sequelize.define('Ride', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'User',
+          model: 'Users',
           key: 'id'
         }
     },
     driverId: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'User',
+          model: 'Users',
           key: 'id'
         }
     },
     pickupLatitude: {
         type: DataTypes.DECIMAL(10, 8),
-        allowNull: false
+        allowNull: false,
+        index: true
     },
     pickupLongitude: {
         type: DataTypes.DECIMAL(11, 8),
-        allowNull: false
+        allowNull: false,
+        index: true
     },
     dropoffLatitude: {
         type: DataTypes.DECIMAL(10, 8),
@@ -77,12 +79,12 @@ const Ride = sequelize.define('Ride', {
     }
 });
   
-// Ride.associate = (models) => {
-//     Ride.belongsTo(models.User, { foreignKey: 'userId' });
-//     Ride.belongsTo(models.Driver, { foreignKey: 'driverId' });
-//     Ride.hasOne(models.Payment, { foreignKey: 'rideId' });
-//     Ride.hasOne(models.Rating, { foreignKey: 'rideId' });
-// };
+Ride.associate = (models) => {
+    Ride.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+    Ride.belongsTo(models.User, { as: 'driver', foreignKey: 'driverId' });
+    Ride.hasOne(models.Payment, { foreignKey: 'rideId' });
+    Ride.hasOne(models.Rating, { foreignKey: 'rideId' });
+};
 
 
 export default Ride;

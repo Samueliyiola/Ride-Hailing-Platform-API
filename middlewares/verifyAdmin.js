@@ -16,7 +16,7 @@ const verifyAdmin = async(req, res, next) =>{
     catch (error) {
         console.log(error);
         console.log(decoded);
-        res.status(500).json({Message: "An error occured"});
+        return res.status(500).json({Message: "An error occured"});
     }
 }
 
