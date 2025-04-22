@@ -48,7 +48,7 @@ export const registerAdmin = async(req, res) =>{
         }
         // hash the password
         const newPassword = await bcrypt.hash(password, 10);
-        await User.create({firstName, lastName, dateOfBirth, gender, email, password : newPassword, phone, address, role : "admin"});
+        await User.create({firstName, lastName, dateOfBirth, gender, email, password : newPassword, phone, address, role : "admin", driverStatus : null});
         res.status(201).json({Message : "Admin created successfully!"});
     }
     catch(error){

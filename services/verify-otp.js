@@ -16,7 +16,7 @@ const verifyOtp = async(req, res) =>{
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         // Create a new user
-        await User.create({firstName, lastName, dateOfBirth, gender, email, password : hashedPassword, phone, address});
+        await User.create({firstName, lastName, dateOfBirth, gender, email, password : hashedPassword, phone, address, driverStatus : null});
         // delete the verification code from the database
         await VerificationCode.destroy({where : {email, code : otp}});
         return res.status(201).json({Message : "User registered successfully!"});

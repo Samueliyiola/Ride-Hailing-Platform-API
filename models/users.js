@@ -45,6 +45,11 @@ const User = sequelize.define("User", {
         type : DataTypes.ENUM("user", "driver", "admin"),
         defaultValue: "user",
         allowNull : false
+    },
+    driverStatus: {
+        type: DataTypes.ENUM("available", "unavailable"),
+        defaultValue: "available",
+        allowNull: true
     }
 });
 
