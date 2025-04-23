@@ -66,8 +66,23 @@ const Ride = sequelize.define('Ride', {
     distance: {
         type: DataTypes.DECIMAL(10, 2)  // in kilometers
     },
+    pickupTime:{
+        type: DataTypes.DATE
+    },
+    dropoffTime: {
+        type: DataTypes.DATE
+    },
     duration: {
         type: DataTypes.INTEGER  // in minutes
+    },
+    cancelledBy:{
+        type: DataTypes.ENUM(
+            'user',   // Ride cancelled by user
+            'driver'  // Ride cancelled by driver
+        )
+    },
+    cancellationReason:{
+        type : DataTypes.STRING
     },
     createdAt: {
         type: DataTypes.DATE,

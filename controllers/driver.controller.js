@@ -62,6 +62,8 @@ export const loginDriver = async(req, res) =>{
             if(!comparePassword){
                 return res.status(401).json({Message : "Invalid username or password!"});
             }
+            // Change the status of the driver to "available"
+            await User.update({driverStatus : "available"}, {where : {id : user.id}});
             const accessToken = jwt.sign({id: user.id, email : user.email, role : user.role}, process.env.JWT_SECRET);
             return res.status(200).json({Message : `Welcome ${user.firstName}, Login successful`, accessToken});
         }
