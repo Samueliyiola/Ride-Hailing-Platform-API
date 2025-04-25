@@ -91,6 +91,9 @@ const Ride = sequelize.define('Ride', {
             max: 5
         }
     },
+    feedback : {
+        type : DataTypes.STRING
+    },
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW

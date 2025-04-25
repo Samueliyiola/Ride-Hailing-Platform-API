@@ -76,3 +76,18 @@ export const loginDriver = async(req, res) =>{
     }
 }
 
+// export const logoutDriver = async(req, res) => {
+//     try {
+//         const token = req.headers.authorization?.split(" ")[1];
+//         if(!token){
+//             return res.status(403).json({Message : "You are not authorized to do this!"});
+//         }
+//         res.setHeader("Authorization", ""); // Clear the token from the response header
+//         // Change the status of the driver to "offline"
+//         await User.update({driverStatus : "unavailable"}, {where : {id : req.user.id}});
+//         return res.status(200).json({Message : "Logout successful"});
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({Message : "An error has occured!"})
+//     }
+// }

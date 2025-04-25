@@ -27,6 +27,7 @@ import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import driverRoutes from "./routes/driverRoutes.js";
 import rideRoutes from "./routes/rideRoutes.js";	
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 // Endpoints
 app.use(limiter);
@@ -34,6 +35,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/driver", driverRoutes);
 app.use("/api/v1/rides", rideRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 
 
 
