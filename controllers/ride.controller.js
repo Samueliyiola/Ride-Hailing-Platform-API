@@ -182,6 +182,7 @@ export const startRide = async(req, res) =>{
 export const completeRide = async(req, res) =>{
     try{
         const rideId = req.params.id;
+        const{ rating, feedback }  = req.body; // Get rating from request body
         const ride = await Ride.findByPk(rideId);
         if(!ride){
             return res.status(404).json({message : "Ride not found!"});
@@ -200,6 +201,8 @@ export const completeRide = async(req, res) =>{
         const estimatedFare = estimateFare(ride.distance, durationMinutes);
         ride.duration = durationMinutes; // Update the ride duration
         ride.finalFare = estimatedFare; // Set the final fare to the estimated fare
+        ride.rating = rating; // Set the rating
+        ride.feedback = feedback; // Set the feedback
         await ride.save();
         return res.status(200).json({message : "Ride has been completed!", Ride : ride});
     }

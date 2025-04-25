@@ -84,6 +84,13 @@ const Ride = sequelize.define('Ride', {
     cancellationReason:{
         type : DataTypes.STRING
     },
+    rating : {
+        type : DataTypes.INTEGER,
+        validate: {
+            min: 1,
+            max: 5
+        }
+    },
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
