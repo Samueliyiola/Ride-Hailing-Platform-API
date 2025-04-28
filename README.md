@@ -2,26 +2,31 @@
 
 ## Overview
 
-This API is designed to support a ride-hailing platform, enabling features like user authentication, drivers management, vehicle management, ride booking, and fare calculation. Built with **Node.js**, **Express.js**, and **Sequelize ORM**, it ensures scalability and efficiency.
+The Ride-Hailing API supports a platform for booking rides, managing drivers, and calculating fares. It offers a suite of functionalities such as user authentication, ride booking, driver management, and payment processing. This API is built using **Node.js**, **Express.js**, **Sequelize ORM**, and **Redis** for real-time features like driver location updates.
 
 ---
 
 ## Features
 
-- **User Authentication**: Sign-up, login, and secure JWT-based authentication.
-- **Driver and Vehicle Management**: Manage drivers, vehicles, and their availability.
-- **Ride Booking**: Book rides, track ride statuses, and manage ride histories.
+- **User Authentication**: Register, login, and manage JWT-based sessions.
+- **Driver and Vehicle Management**: Register drivers, manage vehicle information, and track driver availability and locations.
+- **Ride Booking & Management**: Passengers can book rides, track ride status, and view ride history.
+- **Real-time Location Updates**: Driver locations are tracked in real-time using **Redis** for fast access and updates.
 - **Fare Calculation**: Dynamic fare calculations based on distance, time, and demand.
-- **Admin Dashboard**: Administrative operations such as managing users, drivers, and rides.
+- **Payment Integration**: Integrated with **Paystack** for seamless ride payments.
+- **Admin Dashboard**: Admin can manage users, drivers, and ride statuses.
 
 ---
 
 ## Technology Stack
 
-- **Backend**: Node.js with Express.js
-- **Database**: MySQL (via Sequelize ORM)
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL (Sequelize ORM)
 - **Authentication**: JSON Web Tokens (JWT)
-- **Documentation**: Postman
+- **Real-time Updates**: Redis
+- **Payment Integration**: Paystack
+- **Middleware**: Express Rate Limiter, Custom Authentication Middlewares
+- **Testing**: Mocha/Chai for unit tests
 
 ---
 
@@ -29,49 +34,46 @@ This API is designed to support a ride-hailing platform, enabling features like 
 
 ### Prerequisites
 
-1. [Node.js](https://nodejs.org/) (v14 or later)
-2. [MySQL](https://www.mysql.com/)
-3. [Docker](https://www.docker.com/) (optional for containerization)
-4. A `.env` file with the following variables:
+1. **Node.js** (v14 or later): [Node.js Download](https://nodejs.org/)
+2. **MySQL**: [MySQL Setup](https://www.mysql.com/)
+3. **Docker** (Optional for containerization): [Docker Setup](https://www.docker.com/)
+4. **Redis**: Ensure Redis is running for real-time features.
+5. Create a `.env` file and add the following variables:
    ```
    DB_NAME=ride_hailing_db
    DB_USERNAME=your_username
    DB_PASSWORD=your_password
    DB_HOST=localhost
    JWT_SECRET=your_jwt_secret
+   PAYSTACK_SECRET_KEY=your_paystack_secret_key
    PORT=3000
    ```
 
 ### Installation
 
-1. Clone the repository:
-
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/Samueliyiola/ride-hailing-api.git
    cd ride-hailing-api
    ```
 
-2. Install dependencies:
-
+2. **Install Dependencies**:
    ```bash
-   npm install express sequelize sql2 dotenv jsonwebtoken bcrypt body-parser express-rate-limit
+   npm install
    ```
 
-3. Setup the database:
-
-   - Create a MySQL database matching the `DB_NAME` in your `.env` file.
+3. **Set up the Database**:
+   - Create a MySQL database as defined in your `.env` file.
    - Run the Sequelize migrations:
      ```bash
      npx sequelize-cli db:migrate
      ```
 
-4. Start the development server:
-
+4. **Start the Server**:
    ```bash
    npm run dev
    ```
-
-5. Open the API at `http://localhost:3000`.
+   The API will be available at `http://localhost:3000`.
 
 ---
 
@@ -79,33 +81,51 @@ This API is designed to support a ride-hailing platform, enabling features like 
 
 ### Authentication
 
-- **POST /api/auth/register**: Register a new user.
-- **POST /api/auth/login**: Log in and receive a JWT token.
+- **POST /api/v1/users/register**: Register a new user.
+- **POST /api/v1/users/login**: Log in and receive a JWT token.
+- **POST /api/v1/users/verify-otp**: Verify OTP for user registration.
 
 ### Drivers and Vehicles
 
-- **POST /api/drivers**: Register a new driver.
-- **GET /api/drivers/:id**: Get details of a specific driver.
-- **POST /api/vehicles**: Add a new vehicle.
-- **GET /api/vehicles/:id**: Get details of a specific vehicle.
+- **POST /api/v1/driver/register**: Register a new driver (admin-only).
+- **POST /api/v1/driver/login**: Driver login.
+- **POST /api/v1/driver/update-location**: Update driver location (driver-only).
+- **PATCH /api/v1/driver/availability**: Set driver availability status.
 
 ### Rides
 
-- **POST /api/rides**: Book a new ride.
-- **GET /api/rides/:id**: Get details of a specific ride.
-- **GET /api/rides/history**: Get a user's ride history.
+- **POST /api/v1/rides/request**: Request a ride by a user.
+- **PATCH /api/v1/rides/respond/:id**: Driver responds to a ride request.
+- **PATCH /api/v1/rides/start-ride/:id**: Start a ride.
+- **PATCH /api/v1/rides/complete-ride/:id**: Complete a ride.
+- **PATCH /api/v1/rides/cancel-ride/:id**: Cancel a ride.
+- **GET /api/v1/rides/history/:id**: Get ride history for a user.
+- **GET /api/v1/rides/driver-history/:id**: Get ride history for a driver.
+
+### Payments
+
+- **POST /api/v1/payment/ride/:rideId/pay**: Initiate payment for a ride.
+- **POST /api/v1/payment/webhook/paystack**: Handle Paystack webhook for payment updates.
+- **GET /api/v1/payment/:paymentId**: Retrieve payment information.
+
+---
+
+## WebSocket Notifications
+
+- **Drivers are alerted** when a passenger requests a ride within their radius.
+- **Driver locations** are updated in real-time using Redis.
 
 ---
 
 ## Testing
 
-- Run the test suite:
-  ```bash
-  npm test
-  ```
-- Ensure your `.env.test` file is configured for the testing environment.
+To run the test suite:
 
----
+```bash
+npm test
+```
+
+Make sure to set up the `.env.test` file for testing configurations.
 
 ---
 
@@ -130,7 +150,7 @@ This API is designed to support a ride-hailing platform, enabling features like 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
 ---
 
