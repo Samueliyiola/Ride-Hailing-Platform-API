@@ -3,12 +3,64 @@ import User from "../models/associations.js";
 import  calculateDistance from "../utils/calculateDistance.js";
 import estimateFare from "../utils/estimateFare.js";
 import jwt from "jsonwebtoken";
+import { io } from '../config/socket.js'; 
+import haversine from "haversine-distance";
 
 
 // Request a ride
+// export const requestRide = async (req, res) => {
+//     try {
+//         const {pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude, pickupAddress,dropoffAddress } = req.body;
+//         const userId = req.user.id;
+
+//         // Validate input
+//         if (!pickupLatitude || !pickupLongitude || !dropoffLatitude || !dropoffLongitude) {
+//             return res.status(400).json({ message: "Pickup and dropoff coordinates are required" });
+//         }
+
+//         // Check if user exists
+//         const user = await User.findByPk(req.user.id);
+//         if (!user || (user.role !== 'user')) {
+//             return res.status(404).json({ message: "User not found"});
+//         }
+
+//         // Calculate the distance between the pickup and dropoff locations
+//         const distanceKm = calculateDistance(
+//             pickupLatitude,
+//             pickupLongitude,
+//             dropoffLatitude,
+//             dropoffLongitude
+//         );
+
+//         //  Estimate duration and fare
+//         const estimatedDuration = Math.ceil(distanceKm * 2) + 5;
+//         const estimatedFare = estimateFare(distanceKm, estimatedDuration);
+
+//         // Create a new ride
+//         const newRide = await Ride.create({
+//             userId,
+//             pickupLatitude,
+//             pickupLongitude,
+//             dropoffLatitude,
+//             dropoffLongitude,
+//             pickupAddress,
+//             dropoffAddress,
+//             status: 'PENDING',
+//             estimatedFare,
+//             distance: distanceKm,
+//             // duration: estimatedDuration
+//         });
+
+//         return res.status(201).json({ Message: "Ride requested successfully.", Ride: newRide });
+//     } catch(error) {
+//         console.error(error);
+//         return res.status(500).json({ Message: "An error occurred while requesting the ride." });
+//     }
+// };
+
 export const requestRide = async (req, res) => {
     try {
-        const {pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude, pickupAddress,dropoffAddress } = req.body;
+        const { pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude, pickupAddress, dropoffAddress } = req.body;
         const userId = req.user.id;
 
         // Validate input
@@ -17,12 +69,12 @@ export const requestRide = async (req, res) => {
         }
 
         // Check if user exists
-        const user = await User.findByPk(req.user.id);
-        if (!user || (user.role !== 'user')) {
-            return res.status(404).json({ message: "User not found"});
+        const user = await User.findByPk(userId);
+        if (!user || user.role !== 'user') {
+            return res.status(404).json({ message: "User not found" });
         }
 
-        // Calculate the distance between the pickup and dropoff locations
+        // Calculate distance between pickup and dropoff
         const distanceKm = calculateDistance(
             pickupLatitude,
             pickupLongitude,
@@ -30,11 +82,11 @@ export const requestRide = async (req, res) => {
             dropoffLongitude
         );
 
-        //  Estimate duration and fare
+        // Estimate duration and fare
         const estimatedDuration = Math.ceil(distanceKm * 2) + 5;
         const estimatedFare = estimateFare(distanceKm, estimatedDuration);
 
-        // Create a new ride
+        // Create new ride in DB
         const newRide = await Ride.create({
             userId,
             pickupLatitude,
@@ -46,13 +98,58 @@ export const requestRide = async (req, res) => {
             status: 'PENDING',
             estimatedFare,
             distance: distanceKm,
-            // duration: estimatedDuration
         });
 
-        return res.status(201).json({ Message: "Ride requested successfully.", Ride: newRide });
-    } catch(error) {
+        //Find Nearby Available Drivers using Redis =====
+        const radiusInKm = 5; // Define search radius
+        const driversWithinRadius = await redis.geoRadius(
+            'drivers', // Redis key for the drivers geospatial data
+            pickupLongitude, // Longitude of the pickup location
+            pickupLatitude, // Latitude of the pickup location
+            radiusInKm, // Radius in km
+            'km' // Unit of measurement (km)
+        );
+
+        if (driversWithinRadius.length > 0) {
+            // Filter available drivers from the list
+            const availableDrivers = driversWithinRadius.filter(driver => {
+                return driver.member && driver.member.startsWith('driver:');
+            });
+
+            // Notify each nearby driver via WebSocket
+            availableDrivers.forEach(driver => {
+ 
+                const driverId = driver.member.split(':')[1]; // Extract driverId from `driver:{driverId}` member
+                const socketId = getDriverSocketId(driverId); // You need to track the socketId for each driver
+
+                if (socketId) {
+                    io.to(socketId).emit('newRideRequest', {
+                        rideId: newRide.id,
+                        pickupLocation: {
+                            latitude: pickupLatitude,
+                            longitude: pickupLongitude,
+                            address: pickupAddress
+                        },
+                        dropoffLocation: {
+                            latitude: dropoffLatitude,
+                            longitude: dropoffLongitude,
+                            address: dropoffAddress
+                        },
+                        estimatedFare,
+                        estimatedDuration,
+                    });
+                }
+            });
+        }
+
+        return res.status(201).json({
+            message: "Ride requested successfully and nearby drivers alerted.",
+            ride: newRide,
+            alertedDrivers: driversWithinRadius.map(driver => driver.member), 
+        });
+    } catch (error) {
         console.error(error);
-        return res.status(500).json({ Message: "An error occurred while requesting the ride." });
+        return res.status(500).json({ message: "An error occurred while requesting the ride." });
     }
 };
 
@@ -91,9 +188,9 @@ export const getRideDetails = async (req, res) => {
 
 // Driver responds to ride request
 export const respondToRide = async (req, res) => {
-  const rideId = req.params.id;
-  const driverId = req.user.id; 
-  const { response } = req.body;
+    const rideId = req.params.id;
+    const driverId = req.user.id; 
+    const { response } = req.body;
 
     try{
         const ride = await Ride.findByPk(rideId);

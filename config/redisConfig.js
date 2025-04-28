@@ -10,7 +10,7 @@ redis.on("connect", () =>{
 });
 
 redis.on("error", (error) =>{
-    console.log("Redis error detected: " + error);
+    console.error("Redis error detected: " + error);
 });
 
 

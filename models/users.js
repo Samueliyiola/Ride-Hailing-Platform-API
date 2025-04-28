@@ -48,7 +48,6 @@ const User = sequelize.define("User", {
     },
     driverStatus: {
         type: DataTypes.ENUM("available", "unavailable"),
-        defaultValue: "available",
         allowNull: true
     }
 });

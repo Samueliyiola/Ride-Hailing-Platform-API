@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import {User, Vehicle} from "../models/associations.js";
 import {validateUser, validateVehicle} from "../utils/validation.js";
 import sequelize from "../config/sequelize.js";
+import redis from '../config/redisConfig.js'; 
 
 
 export const registerDriver = async(req, res) => {
@@ -63,7 +64,7 @@ export const loginDriver = async(req, res) =>{
                 return res.status(401).json({Message : "Invalid username or password!"});
             }
             // Change the status of the driver to "available"
-            await User.update({driverStatus : "available"}, {where : {id : user.id}});
+            // await User.update({driverStatus : "available"}, {where : {id : user.id}});
             const accessToken = jwt.sign({id: user.id, email : user.email, role : user.role}, process.env.JWT_SECRET);
             return res.status(200).json({Message : `Welcome ${user.firstName}, Login successful`, accessToken});
         }
@@ -75,6 +76,49 @@ export const loginDriver = async(req, res) =>{
         
     }
 }
+
+export const availabilityDriver = async(req, res) => {
+    try {
+        const {availability} = req.body;
+        // Check if the driver is logged in
+        if(!req.user){
+            return res.status(403).json({message : "You are not authorized to do this!"});
+        }
+        // Change the status of the driver to "available" or "unavailable"
+        await User.update({driverStatus : availability}, {where : {id : req.user.id}});
+        return res.status(200).json({message : `Driver status changed to ${availability}`});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message : "An error has occured!"})
+    }
+}
+
+export const updateDriverLocation = async (req, res) => {
+    try {
+        const driverId = req.user.id; 
+        const { latitude, longitude } = req.body;
+
+        if (!latitude || !longitude) {
+            return res.status(400).json({ message: "Latitude and longitude are required." });
+        }
+        // Save driver's location in Redis with 60 seconds expiry
+        await redis.geoAdd('drivers', {
+            longitude,
+            latitude,
+            member: `driver:${driverId}`,
+        });
+
+        await redis.set(`driverLastUpdate:${driverId}`, Date.now(), 'EX', 60);
+
+        return res.status(200).json({ message: "Driver location updated successfully." });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Failed to update driver location." });
+    }
+};
+
+
+
 
 // export const logoutDriver = async(req, res) => {
 //     try {
