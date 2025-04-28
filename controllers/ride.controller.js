@@ -4,6 +4,7 @@ import  calculateDistance from "../utils/calculateDistance.js";
 import estimateFare from "../utils/estimateFare.js";
 import jwt from "jsonwebtoken";
 import { io } from '../config/socket.js'; 
+import {getDriverSocketId} from "../utils/socketManager.js";
 import haversine from "haversine-distance";
 
 

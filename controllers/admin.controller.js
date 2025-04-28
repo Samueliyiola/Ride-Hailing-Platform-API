@@ -42,7 +42,7 @@ export const registerAdmin = async(req, res) =>{
             return res.status(400).json({Message : "Please input all fields correctly!"});
         }
         // Check if user already exists
-        const existingUser = await User.findOne({where : {email}});
+        const existingUser = await User.findOne({where : {email}});5
         if(existingUser){
             return res.status(403).json("User already exists!");
         }
